@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <h3>Vue2</h3>
+    <div data-controller="vue-two" data-vue-two-counter-value="2" data-vue-two-value-value="vue2 text">
+      <div data-vue-two-target="mountpoint">
+        <p>
+          one
+        </p>
+        <p>
+          two
+        </p>
+      </div>
+      <p data-vue-two-target="output"></p>
+      <a data-action="click->vue-two#increment">Inc</a>
+      <a data-action="click->vue-two#mount">Mount</a>
+      <a data-action="click->vue-two#unmount">Unmount</a>
+    </div>
+    <hr>
+    <h3>Vue3</h3>
+    <div data-controller="vue-three" data-vue-three-counter-value="3" data-vue-three-model-value-value="vue3 Text">
+      <div data-vue-three-target="mountpoint">
+        <p>
+          three
+        </p>
+        <p>
+          four
+        </p>
+      </div>
+      <p data-vue-three-target="output"></p>
+      <a data-action="click->vue-three#increment">Inc</a>
+      <a data-action="click->vue-three#mount">Mount</a>
+      <a data-action="click->vue-three#unmount">Unmount</a>
+    </div>
+    <hr>
+    <h3>React</h3>
+    <div data-controller="react" data-react-counter-value="3" data-react-model-value-value="react Text">
+      <div data-react-target="mountpoint">
+        <p>
+          three
+        </p>
+        <p>
+          four
+        </p>
+      </div>
+      <p data-react-target="output"></p>
+      <a data-action="click->react#increment">Inc</a>
+      <a data-action="click->react#mount">Mount</a>
+      <a data-action="click->react#unmount">Unmount</a>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
