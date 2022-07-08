@@ -19,17 +19,6 @@ export default class extends Controller {
     this.mauntHook = new ReactComponent(HelloComponentHook, this.hookTarget)
     this.mauntClass.createApp(this)
     this.mauntHook.createApp(this)
-
-    // console.log(HelloComponentClass.prototype.isReactComponent)
-    // console.log(HelloComponentHook.prototype.isReactComponent)
-
-    // this.component = () => {
-    //   return React.createElement(HelloComponentClass, {
-    //     onChange: _this._synchronizeStateToStimulus.bind(_this),
-    //     counter: _this.counterValue,
-    //     text: _this.textValue
-    //   })
-    // }
   }
 
   connect () { }
@@ -44,10 +33,18 @@ export default class extends Controller {
     this.mauntHook.unmount()
   }
   counterValueChanged (newVal) {
-    console.log(`counterValueChanged(${newVal})`)
+    console.log(`react controller: counterValueChanged(${newVal})`)
   }
 
   increment () {
+    if (!this.mauntClass.getProperty("myprop")) {
+      this.mauntClass.setProperty("myprop", "surprise!")
+      this.mauntHook.setProperty("myprop", "surprise!")
+    } else {
+      this.mauntClass.setProperty("myprop", undefined)
+      this.mauntHook.setProperty("myprop", undefined)
+    }
+    
     this.counterValue = this.counterValue + 1
   }
 

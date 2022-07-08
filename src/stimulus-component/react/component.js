@@ -18,10 +18,11 @@ export class ReactComponent {
   _isMounted = false
   app = undefined
 
-  constructor(mountableComponent, mountPoint) {
+  constructor(mountableComponent, mountPoint, customProps) {
     this._isClassComponent = mountableComponent.prototype.isReactComponent
     this.mountableComponent = mountableComponent
     this.mountPoint = mountPoint
+    this.otherProperties = customProps || {}
     this.mountHelper = new MountHelper(this)
   }
 
@@ -57,8 +58,9 @@ export class ReactComponent {
 
     this.mountHelper.checkMountPointDefined()
     this.reactRoot = this.constructor.factory(this.mountPoint)
+    this.originalMountPoint = this.mountPoint
 
-    // const innerHTML = this.mountHelper.extractOriginalContent()
+    this.originalInnerHTML = this.mountHelper.extractOriginalContent()
     this._renderComponent()
 
     this._isMounted = true
@@ -80,12 +82,19 @@ export class ReactComponent {
               _this.controller[`${val}Value`] = _this.mountedComponentRef.state[val]
             })
           }
-        }
+        },
+        ...this.otherProperties
       },
       ..._this.stimulusControllerValues.map((name) => {
         return { [name]: _this.controller[`${name}Value`] }
       })
     )
+    
+    let domChildren = []
+    if ( this.originalInnerHTML ) {
+      domChildren = this.constructor.renderFunction("div", { className: "stimulus-component-inner-html", key: "innerHtml", dangerouslySetInnerHTML: {__html: this.originalInnerHTML } })
+    }
+
     if (this._isClassComponent) {
       this.reactRoot.render(
         this.constructor.renderFunction(
@@ -93,14 +102,16 @@ export class ReactComponent {
           {
             ...reactProps,
             ref: ref => _this.mountedComponentRef = ref,
-          }
+          },
+          domChildren
         )
       )
     } else { // functional component
       this.reactRoot.render(
         this.constructor.renderFunction(
           this.mountableComponent,
-          reactProps
+          reactProps,
+          domChildren
         )
       )
     }
@@ -112,20 +123,28 @@ export class ReactComponent {
       return
     }
 
-    // let slotContent
-    // if (this.app._instance.subTree.children[0]) {
-    //   slotContent = this.app._instance.subTree.children[0].el.innerHTML
-    // }
+    let slotContent
+    if ( this.originalInnerHTML ) {
+      const childrenContainer = this.originalMountPoint.querySelector(".stimulus-component-inner-html")
+      if (childrenContainer) {
+        slotContent = childrenContainer.innerHTML
+      }
+      delete this.originalInnerHTML
+    }
     this.reactRoot.unmount()
-    // this.mountHelper.restoreOriginalContent(slotContent)
+    this.originalMountPoint.innerHTML = slotContent
     this._isMounted = false
   }
 
   setProperty(name, value) {
-    this.app[name] = value
+    const lowerCaseName = name.toLowerCase()
+    if ( name !== lowerCaseName ) console.warn("react does not like upper-case letters in prop names!")
+    this.otherProperties[lowerCaseName] = value
   }
 
   getProperty(name) {
-    return this.app[name]
+    const lowerCaseName = name.toLowerCase()
+    if ( name !== lowerCaseName ) console.warn("react does not like upper-case letters in prop names!")
+    return this.otherProperties[lowerCaseName]
   }
 }
