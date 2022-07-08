@@ -10,54 +10,45 @@ export default class extends Controller {
 
   initialize () {
     const _this = this
-    // render App component and show it on screen
-    // const props = {
-    //   count: 10
+
+    this.component = React.createElement(
+      HelloComponentClass,
+      {
+        onChange: () => {
+          _this._synchronizeStateToStimulus()
+        },
+        ref: ref => _this.componentRef = ref,
+        counter: _this.counterValue,
+        text: _this.textValue
+      }
+    )
+    console.log(HelloComponentClass)
+    console.log(this.component)
+    // console.log(HelloComponentClass.prototype.isReactComponent)
+    // console.log(HelloComponentHook.prototype.isReactComponent)
+
+    // this.component = () => {
+    //   return React.createElement(HelloComponentClass, {
+    //     onChange: _this._synchronizeStateToStimulus.bind(_this),
+    //     counter: _this.counterValue,
+    //     text: _this.textValue
+    //   })
     // }
-
-    class Wrapper extends React.Component {
-      constructor(props) {
-        super(props)
-      }
-  
-      render () {
-        return React.createElement(
-          HelloComponentClass,
-          {
-            ref: ref => _this.componentRef = ref,
-            onChange: () => {
-              _this._synchronizeStateToStimulus()
-            },
-            counter: _this.counterValue,
-            text: _this.textValue
-          }
-        )
-      }
-    }  
-
-    this.component = React.createElement(Wrapper)
   }
 
   connect () {
     // this.polling = true
   }
 
-  _synchronizeStateToStimulus () {
-    this.counterValue = this.componentRef.state.counter
-    this.valueValue = this.componentRef.state.value
-  }
-
-  _synchronizeStateToReact () {
-    this.componentRef.setState({counter: this.counterValue})
-  }
-
   mount () {
-    this.reactRoot = createRoot(this.mountpointTarget)
+    const _this = this
     this.reactRoot.render(this.component)
+    // this.reactRoot.render(this.component())
+
     if ( this.polling ) {
       this.updateInterval = setInterval(() => {
         this._synchronizeStateToStimulus()
-      }, 500)        
+      }, 500)
     }
   }
 
@@ -83,5 +74,23 @@ export default class extends Controller {
     } else {
       this.outputTarget.innerHTML = `Hello, ${this.textValue}!`
     }
+  }
+
+  _synchronizeStateToStimulus (payload) {
+    console.log("synchronize to stimulus", payload)
+    // Object.keys(payload).forEach((key) => {
+    //   this[`${key}Value`] = payload[key]
+    // })
+    // this._synchronizeStateToReact()
+
+    this.counterValue = this.componentRef.state.counter
+    this.textValue = this.componentRef.state.text
+  }
+
+  _synchronizeStateToReact () {
+    console.log("synchronize to react")
+    // this.reactRoot.render(this.component())
+
+    this.componentRef.setState({counter: this.counterValue, text: this.textValue})
   }
 }
