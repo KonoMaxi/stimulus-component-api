@@ -56,6 +56,17 @@
       <a data-action="click->react#mount">Mount</a>
       <a data-action="click->react#unmount">Unmount</a>
     </div>
+    <hr>
+    <h3>Svelte</h3>
+    <div data-controller="svelte" data-svelte-counter-value="3" data-svelte-text-value="svelte Text">
+      <div style="display: flex; justify-content: space-around">
+        <div data-svelte-target="mount" data-action="defug->svelte#debug"></div>
+        <span>Svelte currently has no way to access slots from outside :-(</span>
+      </div>
+      <a data-action="click->svelte#increment">Inc</a>
+      <a data-action="click->svelte#mount">Mount</a>
+      <a data-action="click->svelte#unmount">Unmount</a>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
