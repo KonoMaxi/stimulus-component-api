@@ -30,6 +30,9 @@ export default {
         on: { click: () => { this.currentCounter += 1 } },
       }, '+1'),
       h('button', {
+        on: { click: () => { this.$emit("action", { name: "debugVue", parameters: ["hello", "vue"]}) } },
+      }, 'action!'),
+      h('button', {
         on: { click: () => { this.updateMessage() } },
       }, 'emit input event')
     ])

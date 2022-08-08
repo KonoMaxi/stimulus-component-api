@@ -37,6 +37,10 @@ export default class extends Controller {
     this.counterValue = this.counterValue + 1
   }
 
+  debugVue( some, param ) {
+    console.log("debug!", some, param)
+  }
+
   updateText(event) {
     this.messageValue = event.target.value
     if (this.messageValue.length === 0) {

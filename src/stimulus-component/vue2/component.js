@@ -81,7 +81,11 @@ export class Vue2Component {
               })
             ),
             on: Object.assign(
-              {},
+              {
+                action: function (payload) {
+                  _this.mountHelper.handleAction(payload)
+                }
+              },
               ...propertiesToSync.map(name => propagateChanges(_this.controller, name))
             )
           }
