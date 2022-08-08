@@ -1,4 +1,4 @@
-import { Application } from "@hotwired/stimulus"
+import { Application } from '@hotwired/stimulus'
 import { registerControllers } from 'stimulus-vite-helpers'
 
 const application = Application.start()
