@@ -16,6 +16,12 @@ export class Vue3Component {
   static getFactory() {
     return this.factory
   }
+  static setRenderFunction(r) {
+    this.renderFunction = r
+  }
+  static getRenderFunction() {
+    return this.renderFunction
+  }
 
   _isMounted = false
   app = undefined
@@ -35,7 +41,7 @@ export class Vue3Component {
     this.mountHelper.createChangeDetectionProxy((valueName) => {
       const valueNameUnsuffixed = valueName.slice(0, -5)
       
-      if ( this.vueRoot && Object.keys(this.vueRoot).includes(valueNameUnsuffixed) ) {
+      if ( this._isMounted && this.vueRoot ) {
         this.vueRoot[valueNameUnsuffixed] = this.controller[valueName]
       }
     })
@@ -62,7 +68,7 @@ export class Vue3Component {
     // get intersection of vue props and stimulus values
     let propertiesToSync = vueComponentProps.filter(x => this.stimulusControllerValues.includes(x))
 
-    this.app = this.constructor.factory.createApp({
+    this.app = this.constructor.factory({
       name: `${ this.controller.identifier }-controller-${ this.mountableComponent.name ? this.mountableComponent.name + '-' : '' }mountable`,
       data: () => {
         return Object.assign(
@@ -84,9 +90,9 @@ export class Vue3Component {
           }),
           ...propertiesToSync.map(name => propagateChanges(_this.controller, name))
         )
-        const vnode = _this.constructor.factory.h(
+        const vnode = _this.constructor.renderFunction(
           _this.mountableComponent, props, () => [
-            _this.constructor.factory.h('div', {class: 'stimulus-component-slot-content'})
+            _this.constructor.renderFunction('div', {class: 'stimulus-component-slot-content'})
           ]
         )
         return vnode

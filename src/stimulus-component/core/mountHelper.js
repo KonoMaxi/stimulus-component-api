@@ -45,16 +45,10 @@ export class MountHelper {
   }
 
   checkMountPointDefined() {
-    if (!this.mountable.originalMountPoint) {
+    if (!this.mountable.mountPoint) {
       console.debug(`setting mountpoint to controller element`)
-      this.mountable.originalMountPoint = this.controller.element
+      this.mountable.mountPoint = this.controller.element
     }
-  }
-
-  extractOriginalContent() {
-    const originalInnerHtml = this.mountable.originalMountPoint.innerHTML
-    this.mountable.originalMountPoint.innerHTML = ''
-    return originalInnerHtml  
   }
 
   transferChildNodes(origin, optionalCallback) {
@@ -72,10 +66,4 @@ export class MountHelper {
     }
   }
 
-  restoreOriginalContent(slotContent) {
-    this.mountable.syntheticMountPoint.remove()
-    if (slotContent) {
-      this.mountable.originalMountPoint.innerHTML = slotContent
-    }
-  }
 }

@@ -2,8 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 import HelloComponent from '../vue3/HelloComponent'
 
 import { Vue3Component } from "../../stimulus-component"
-import * as Vue from 'vue3'
-Vue3Component.setFactory(Vue)
+import { createApp, h } from 'vue3'
+
+Vue3Component.setFactory(createApp)
+Vue3Component.setRenderFunction(h)
 
 export default class extends Controller {
   static targets = [ "mountpoint", "output" ]

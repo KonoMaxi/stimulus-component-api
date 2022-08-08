@@ -16,6 +16,8 @@ export class Vue2Component {
   static getFactory() {
     return this.factory
   }
+  static setRenderFunction(r) { }
+  static getRenderFunction() { }
 
   _isMounted = false
   app = undefined
