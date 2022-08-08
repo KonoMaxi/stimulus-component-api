@@ -23,6 +23,9 @@ export default {
   methods: {
     updateMessage() {
       this.$emit("update:modelValue", "input was emitted")
+    },
+    emitAction() {
+      this.$emit("action", { name: "debugVue", parameters: ["hi", "you"]})
     }
   },
   render() {
@@ -35,7 +38,10 @@ export default {
       }, '+1'),
       h('button', {
         onClick: () => { this.updateMessage() },
-      }, 'emit input event')
+      }, 'emit input event'),
+      h('button', {
+        onClick: () => { this.emitAction() },
+      }, 'trigger Action')
     ])
   }
 };

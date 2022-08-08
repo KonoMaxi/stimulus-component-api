@@ -36,9 +36,7 @@ export class Vue3Component {
       console.log("vue3 detected")
       const valueNameUnsuffixed = valueName.slice(0, -5)
       
-      // TODO vue3 way for 
       if ( this.vueRoot && Object.keys(this.vueRoot).includes(valueNameUnsuffixed) ) {
-        // this.app._.data[valueNameUnsuffixed] = this.controller[valueName]
         this.vueRoot[valueNameUnsuffixed] = this.controller[valueName]
       }
     })
@@ -54,16 +52,19 @@ export class Vue3Component {
 
     this.mountHelper.checkMountPointDefined()
 
-    const innerHTML = this.mountHelper.extractOriginalContent()
+    const docFragment = new DocumentFragment()
+    Array.from(this.originalMountPoint.children).forEach((node) => docFragment.appendChild(node))
+
+    // const innerHTML = this.mountHelper.extractOriginalContent()
     this.syntheticMountPoint = document.createElement("div")
     this.originalMountPoint.appendChild(this.syntheticMountPoint)
 
 
     const vueComponentProps = Object.keys(this.mountableComponent.props)
+    
     // get intersection of vue props and stimulus values
     let propertiesToSync = vueComponentProps.filter(x => this.stimulusControllerValues.includes(x))
 
-    // this.app = this.constructor.factory.createApp(this.mountableComponent)
     this.app = this.constructor.factory.createApp({
       name: `${ this.controller.identifier }-controller-${ this.mountableComponent.name ? this.mountableComponent.name + '-' : '' }mountable`,
       data: () => {
@@ -76,28 +77,27 @@ export class Vue3Component {
       },
       render: function () {
         const props = Object.assign(
-          {},
+          {
+            onAction: function (payload) {
+              _this.mountHelper.handleAction(payload)
+            }
+          },
           ...vueComponentProps.map(name => {
             return { [name]: this[name] }
           }),
           ...propertiesToSync.map(name => propagateChanges(_this.controller, name))
         )
         const vnode = _this.constructor.factory.h(
-          _this.mountableComponent, props, [
-            _this.constructor.factory.h('div', { innerHTML })
+          _this.mountableComponent, props, () => [
+            _this.constructor.factory.h('stimulus-component-slot-content')
           ]
-          // {
-          //   default: () => 'default slot'
-          // }
-          // _this.constructor.factory.h('div', this.$slots.default()),
         )
-        // vnode.$slots.default = innerHtml
         return vnode
       }
     })
     this.vueRoot = this.app.mount(this.syntheticMountPoint)
-
-    console.log(this.app)
+    const slotElement = this.syntheticMountPoint.querySelector('stimulus-component-slot-content')
+    Array.from(docFragment.children).forEach(node => slotElement.appendChild(node))
     this.syntheticMountPoint = this.app._container
     this._isMounted = true
   }
@@ -108,12 +108,11 @@ export class Vue3Component {
       return
     }
 
-    let slotContent
-    if (this.app._instance.subTree.children[0]) {
-      slotContent = this.app._instance.subTree.children[0].el.innerHTML
-    }
+    const docFragment = new DocumentFragment()
+    const slotElement = this.syntheticMountPoint.querySelector('stimulus-component-slot-content')
+    Array.from(slotElement.children).forEach((node) => docFragment.appendChild(node))
     this.app.unmount()
-    this.mountHelper.restoreOriginalContent(slotContent)
+    Array.from(docFragment.children).forEach(node => this.originalMountPoint.appendChild(node))
     this._isMounted = false
   }
 
