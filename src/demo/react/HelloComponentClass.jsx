@@ -32,6 +32,14 @@ export default class HelloComponentClass extends React.Component {
         >
           emit input event
         </button>
+        <button
+          onClick={() => this.props.onAction({
+            name: "debugAction",
+            params: ["value was emitted"],
+          })}
+        >
+          use Action callback input event
+        </button>
       </div>
     )
   }

@@ -43,8 +43,6 @@ export class ReactComponent {
           })  
         }
         this._renderComponent()
-        // this.app._.data[valueNameUnsuffixed] = this.controller[valueName]
-        // this.vueRoot[valueNameUnsuffixed] = this.controller[valueName]
       }
     })
   }
@@ -82,6 +80,9 @@ export class ReactComponent {
               _this.controller[`${val}Value`] = _this.mountedComponentRef.state[val]
             })
           }
+        },
+        onAction: (payload) => {
+          this.mountHelper.handleAction(payload)
         },
         ...this.otherProperties
       },

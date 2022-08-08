@@ -20,6 +20,22 @@ export class MountHelper {
     return stimulusValueNames
   }
 
+  handleAction (actionPayload) {
+    let fName = actionPayload
+    let fParams = []
+    if (typeof actionPayload == "object" && actionPayload.name) {
+      fName = actionPayload.name
+    }
+    if (typeof actionPayload == "object" && actionPayload.parameters) {
+      if (Array.isArray(actionPayload.parameters)) {
+        fParams = actionPayload.parameters
+      } else {
+        fParams = [actionPayload.parameters]
+      }
+    }
+    this.controller[fName](...fParams)
+  }
+
   createChangeDetectionProxy (callback) {
     const originalFunction = this.controller.context.valueObserver.stringMapValueChanged
     this.controller.context.valueObserver.stringMapValueChanged = (...args) => {

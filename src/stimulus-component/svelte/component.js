@@ -57,19 +57,7 @@ export class SvelteComponent {
       })
     })
     this.app.$on("action", event => {
-      let fName = event.detail
-      let fParams = []
-      if (typeof event.detail == "object" && event.detail.name) {
-        fName = event.detail.name
-      }
-      if (typeof event.detail == "object" && event.detail.parameters) {
-        if (Array.isArray(event.detail.parameters)) {
-          fParams = event.detail.parameters
-        } else {
-          fParams = [event.detail.parameters]
-        }
-      }
-      this.controller[fName](...fParams)
+      this.mountHelper.handleAction(event.detail)
     })
 
     this._isMounted = true

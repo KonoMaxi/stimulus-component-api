@@ -48,6 +48,10 @@ export default class extends Controller {
     this.counterValue = this.counterValue + 1
   }
 
+  debugAction ( someParam ) {
+    console.log("debug!", someParam)
+  }
+
   updateText (event) {
     this.modelValueValue = event.target.value
     if (this.modelValueValue.length === 0) {

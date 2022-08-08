@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function HelloComponentHook({ children, counter, myprop, text, onChange }) {
+export default function HelloComponentHook({ children, counter, myprop, text, onChange, onAction }) {
 
   const [textState, setTextState ] = useState("default react hook Text")
 
@@ -26,6 +26,11 @@ export default function HelloComponentHook({ children, counter, myprop, text, on
         onClick={() => onChange({ text: undefined })}
       >
         Bye
+      </button>
+      <button
+        onClick={() => onAction("debugAction")}
+      >
+        Action
       </button>
     </div>
   )
