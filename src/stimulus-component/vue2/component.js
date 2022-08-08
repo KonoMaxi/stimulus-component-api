@@ -33,14 +33,12 @@ export class Vue2Component {
   createApp(controller) {
     this.controller = controller
     this.mountHelper.createChangeDetectionProxy((valueName) => {
-      console.log("vue2 detected")
       const valueNameUnsuffixed = valueName.slice(0, -5)
       
-      if (this.app && Object.keys(this.app._data).includes(valueNameUnsuffixed)) {
+      if ( this._isMounted && this.app && Object.keys(this.app._data).includes(valueNameUnsuffixed)) {
         this.app[valueNameUnsuffixed] = this.controller[valueName]
       }
     })
-    // Vue2 has a more "ad-hoc" mentality - nothing more going on around here
   }
   
   mount() {

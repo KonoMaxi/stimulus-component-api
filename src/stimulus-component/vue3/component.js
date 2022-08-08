@@ -33,7 +33,6 @@ export class Vue3Component {
   createApp(controller) {
     this.controller = controller
     this.mountHelper.createChangeDetectionProxy((valueName) => {
-      console.log("vue3 detected")
       const valueNameUnsuffixed = valueName.slice(0, -5)
       
       if ( this.vueRoot && Object.keys(this.vueRoot).includes(valueNameUnsuffixed) ) {

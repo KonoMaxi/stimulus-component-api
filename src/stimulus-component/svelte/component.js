@@ -24,6 +24,13 @@ export class SvelteComponent {
 
   createApp(controller) {
     this.controller = controller
+    this.mountHelper.createChangeDetectionProxy((valueName) => {
+      const valueNameUnsuffixed = valueName.slice(0, -5)
+      if ( this._isMounted ) {
+        this.app.$set({ [valueNameUnsuffixed]: this.controller[valueName] })
+      }
+    })
+
   }
   
   mount() {
@@ -46,12 +53,6 @@ export class SvelteComponent {
         this.otherProperties
       )
     })
-
-    this.mountHelper.createChangeDetectionProxy((valueName) => {
-      const valueNameUnsuffixed = valueName.slice(0, -5)
-      this.app.$set({ [valueNameUnsuffixed]: this.controller[valueName] })
-    })
-
     this.app.$on("stateChange", event => {
       Object.entries(event.detail).forEach(([attKey, attValue]) => {
         this.controller[`${attKey}Value`] = attValue
@@ -60,6 +61,7 @@ export class SvelteComponent {
     this.app.$on("action", event => {
       this.mountHelper.handleAction(event.detail)
     })
+
     transfer.to(this.mountPoint.querySelector('.stimulus-component-slot-content'))
 
     this._isMounted = true
