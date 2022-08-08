@@ -25,7 +25,7 @@ export default {
     return h('div', { class: "hello-component" },
     [
       h('div', `${ this.value } ${ this.currentCounter }`),
-      this.$slots.default,
+      h('div', { style: "border: solid 1px black; padding: 10px" }, this.$slots.default),
       h('button', {
         on: { click: () => { this.currentCounter += 1 } },
       }, '+1'),

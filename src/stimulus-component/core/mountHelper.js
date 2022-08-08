@@ -57,6 +57,21 @@ export class MountHelper {
     return originalInnerHtml  
   }
 
+  transferChildNodes(origin, optionalCallback) {
+    const docFragment = new DocumentFragment()
+    Array.from(origin.children).forEach((node) => docFragment.appendChild(node))
+
+    if (optionalCallback) {
+      optionalCallback()
+    }
+
+    return {
+      to: (sink) => {
+        Array.from(docFragment.children).forEach((node) => sink.appendChild(node))
+      }
+    }
+  }
+
   restoreOriginalContent(slotContent) {
     this.mountable.syntheticMountPoint.remove()
     if (slotContent) {

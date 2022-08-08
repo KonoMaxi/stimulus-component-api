@@ -11,7 +11,9 @@ export default function HelloComponentHook({ children, counter, myprop, text, on
   return (
     <div className="hello-component">
       <div> {textState} {counter} {myprop}</div>
-      { children }
+      <div style={{border: 'solid 1px black', padding: '10px'}}>
+        { children }
+      </div>
       <button
         onClick={() => onChange({ counter: counter + 1 })}
       >

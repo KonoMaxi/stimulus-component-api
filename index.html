@@ -44,11 +44,11 @@
     <div data-controller="react" data-react-counter-value="3" data-react-text-value="react Text">
       <div style="display: flex; justify-content: space-around">
         <div data-react-target="class">
-          <span>This is a: </span>
+          <span>This is a </span>
           <span>class Component</span>
         </div>
         <div data-react-target="hook">
-          <span>This is a:</span>
+          <span>This is a </span>
           <span>functional Component</span>
         </div>  
       </div>
@@ -60,8 +60,10 @@
     <h3>Svelte</h3>
     <div data-controller="svelte" data-svelte-counter-value="3" data-svelte-text-value="svelte Text">
       <div style="display: flex; justify-content: space-around">
-        <div data-svelte-target="mount" data-action="defug->svelte#debug"></div>
-        <span>Svelte currently has no way to access slots from outside :-(</span>
+        <div data-svelte-target="mount" data-action="defug->svelte#debug">
+          <p>There is currently no way to access slots from outside a component to inject HTML :-(</p>
+          <p>You have to use a div with the "stimulus-component-slot-content" class instead of a slot in your component</p>
+        </div>
       </div>
       <a data-action="click->svelte#increment">Inc</a>
       <a data-action="click->svelte#mount">Mount</a>

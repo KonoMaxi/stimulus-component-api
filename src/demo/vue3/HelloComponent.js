@@ -28,11 +28,12 @@ export default {
       this.$emit("action", { name: "debugVue", parameters: ["hi", "you"]})
     }
   },
+  
   render() {
     return h('div', { class: "hello-component" },
     [
       h('div', `${ this.modelValue } ${ this.currentCounter }`),
-      this.$slots.default ? this.$slots.default() : "",
+      h('div', { style: "border: solid 1px black; padding: 10px" }, this.$slots.default ? this.$slots.default() : ""),
       h('button', {
         onClick: () => { this.currentCounter += 1 },
       }, '+1'),

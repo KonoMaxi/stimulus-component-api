@@ -34,6 +34,8 @@ export class SvelteComponent {
     }
 
     this.mountHelper.checkMountPointDefined()
+    const transfer = this.mountHelper.transferChildNodes(this.mountPoint)
+
     this.app = new this.mountableComponent({
       target: this.mountPoint,
       props: Object.assign(
@@ -45,11 +47,10 @@ export class SvelteComponent {
       )
     })
 
-    const originalFunction = this.controller.context.valueObserver.stringMapValueChanged
-    this.controller.context.valueObserver.stringMapValueChanged = (...args) => {
-      this.app.$set({ [args[1].slice(0, -5)]: this.controller[args[1]] })
-      return Reflect.apply(originalFunction, this.controller.context.valueObserver, args)
-    }
+    this.mountHelper.createChangeDetectionProxy((valueName) => {
+      const valueNameUnsuffixed = valueName.slice(0, -5)
+      this.app.$set({ [valueNameUnsuffixed]: this.controller[valueName] })
+    })
 
     this.app.$on("stateChange", event => {
       Object.entries(event.detail).forEach(([attKey, attValue]) => {
@@ -59,6 +60,7 @@ export class SvelteComponent {
     this.app.$on("action", event => {
       this.mountHelper.handleAction(event.detail)
     })
+    transfer.to(this.mountPoint.querySelector('.stimulus-component-slot-content'))
 
     this._isMounted = true
     return this.app
@@ -70,7 +72,10 @@ export class SvelteComponent {
       return
     }
 
-    this.app.$destroy()
+    this.mountHelper.transferChildNodes(this.mountPoint.querySelector('.stimulus-component-slot-content'), () => {
+      this.app.$destroy()
+    }).to(this.mountPoint)
+
     this._isMounted = false
   }
 

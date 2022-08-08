@@ -56,10 +56,11 @@ export class ReactComponent {
 
     this.mountHelper.checkMountPointDefined()
     this.reactRoot = this.constructor.factory(this.mountPoint)
-    this.originalMountPoint = this.mountPoint
 
-    this.originalInnerHTML = this.mountHelper.extractOriginalContent()
+    const transfer = this.mountHelper.transferChildNodes(this.mountPoint)  
     this._renderComponent()
+    // react does not render immediately
+    setTimeout(() => transfer.to(this.mountPoint.querySelector('.stimulus-component-slot-content')))
 
     this._isMounted = true
   }
@@ -91,10 +92,7 @@ export class ReactComponent {
       })
     )
     
-    let domChildren = []
-    if ( this.originalInnerHTML ) {
-      domChildren = this.constructor.renderFunction("div", { className: "stimulus-component-inner-html", key: "innerHtml", dangerouslySetInnerHTML: {__html: this.originalInnerHTML } })
-    }
+    const stimulusComponentSlotContentPlaceholder = this.constructor.renderFunction("div", { className: "stimulus-component-slot-content" })
 
     if (this._isClassComponent) {
       this.reactRoot.render(
@@ -104,7 +102,7 @@ export class ReactComponent {
             ...reactProps,
             ref: ref => _this.mountedComponentRef = ref,
           },
-          domChildren
+          stimulusComponentSlotContentPlaceholder
         )
       )
     } else { // functional component
@@ -112,7 +110,7 @@ export class ReactComponent {
         this.constructor.renderFunction(
           this.mountableComponent,
           reactProps,
-          domChildren
+          stimulusComponentSlotContentPlaceholder
         )
       )
     }
@@ -124,16 +122,9 @@ export class ReactComponent {
       return
     }
 
-    let slotContent
-    if ( this.originalInnerHTML ) {
-      const childrenContainer = this.originalMountPoint.querySelector(".stimulus-component-inner-html")
-      if (childrenContainer) {
-        slotContent = childrenContainer.innerHTML
-      }
-      delete this.originalInnerHTML
-    }
-    this.reactRoot.unmount()
-    this.originalMountPoint.innerHTML = slotContent
+    this.mountHelper.transferChildNodes(this.mountPoint.querySelector('.stimulus-component-slot-content'), () => {
+      this.reactRoot.unmount()
+    }).to(this.mountPoint)
     this._isMounted = false
   }
 

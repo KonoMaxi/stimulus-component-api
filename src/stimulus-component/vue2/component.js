@@ -56,8 +56,8 @@ export class Vue2Component {
     let propertiesToSync = vueComponentProps.filter(x => this.stimulusControllerValues.includes(x))
 
     this.mountHelper.checkMountPointDefined()
+    const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)
 
-    const innerHtml = this.mountHelper.extractOriginalContent()
     this.syntheticMountPoint = document.createElement("div")
     this.originalMountPoint.appendChild(this.syntheticMountPoint)
 
@@ -87,7 +87,7 @@ export class Vue2Component {
           }
           ,
           [
-            h('div', { domProps: { innerHTML: innerHtml } })
+            h("div", { class: 'stimulus-component-slot-content'})
           ]
         )
       }
@@ -95,6 +95,7 @@ export class Vue2Component {
 
     this.app.$mount(this.syntheticMountPoint)
     this.syntheticMountPoint = this.app.$el
+    transfer.to(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'))
     this._isMounted = true
   }
 

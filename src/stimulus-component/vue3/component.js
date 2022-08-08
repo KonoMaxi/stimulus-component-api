@@ -52,13 +52,11 @@ export class Vue3Component {
 
     this.mountHelper.checkMountPointDefined()
 
-    const docFragment = new DocumentFragment()
-    Array.from(this.originalMountPoint.children).forEach((node) => docFragment.appendChild(node))
+    const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)
 
     // const innerHTML = this.mountHelper.extractOriginalContent()
     this.syntheticMountPoint = document.createElement("div")
     this.originalMountPoint.appendChild(this.syntheticMountPoint)
-
 
     const vueComponentProps = Object.keys(this.mountableComponent.props)
     
@@ -89,15 +87,15 @@ export class Vue3Component {
         )
         const vnode = _this.constructor.factory.h(
           _this.mountableComponent, props, () => [
-            _this.constructor.factory.h('stimulus-component-slot-content')
+            _this.constructor.factory.h('div', {class: 'stimulus-component-slot-content'})
           ]
         )
         return vnode
       }
     })
     this.vueRoot = this.app.mount(this.syntheticMountPoint)
-    const slotElement = this.syntheticMountPoint.querySelector('stimulus-component-slot-content')
-    Array.from(docFragment.children).forEach(node => slotElement.appendChild(node))
+
+    transfer.to(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'))
     this.syntheticMountPoint = this.app._container
     this._isMounted = true
   }
@@ -108,11 +106,10 @@ export class Vue3Component {
       return
     }
 
-    const docFragment = new DocumentFragment()
-    const slotElement = this.syntheticMountPoint.querySelector('stimulus-component-slot-content')
-    Array.from(slotElement.children).forEach((node) => docFragment.appendChild(node))
-    this.app.unmount()
-    Array.from(docFragment.children).forEach(node => this.originalMountPoint.appendChild(node))
+    this.mountHelper.transferChildNodes(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'), () => {
+      this.app.unmount()
+    }).to(this.originalMountPoint)
+
     this._isMounted = false
   }
 

@@ -17,7 +17,9 @@ export default class HelloComponentClass extends React.Component {
     return (
       <div className="hello-component">
         <div>{this.state.text} {this.state.counter} {this.props.myprop}</div>
-        { this.props.children }
+        <div style={{border: 'solid 1px black', padding: '10px'}}>
+          { this.props.children }
+        </div>
         <button
           onClick={() => this.setState({
             counter: this.state.counter + 1,
