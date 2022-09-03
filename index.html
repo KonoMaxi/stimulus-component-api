@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <h3>Vue2</h3>
-    <div data-controller="vue-two" data-vue-two-counter-value="2" data-vue-two-value-value="vue2 text">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <h3>Vue2</h3>
+  <div data-controller="vue-two" data-vue-two-counter-value="2" data-vue-two-value-value="vue2 text">
+    <div style="display: flex; justify-content: space-around">
       <div data-vue-two-target="mountpoint">
         <p>
           one
@@ -19,13 +22,15 @@
         </p>
       </div>
       <p data-vue-two-target="output"></p>
-      <a data-action="click->vue-two#increment">Inc</a>
-      <a data-action="click->vue-two#mount">Mount</a>
-      <a data-action="click->vue-two#unmount">Unmount</a>
     </div>
-    <hr>
-    <h3>Vue3</h3>
-    <div data-controller="vue-three" data-vue-three-counter-value="3" data-vue-three-model-value-value="vue3 Text">
+    <button data-action="click->vue-two#increment">Inc</button>
+    <button data-action="click->vue-two#mount">Mount</button>
+    <button data-action="click->vue-two#unmount">Unmount</button>
+  </div>
+  <hr>
+  <h3>Vue3</h3>
+  <div data-controller="vue-three" data-vue-three-counter-value="3" data-vue-three-model-value-value="vue3 Text">
+    <div style="display: flex; justify-content: space-around">
       <div data-vue-three-target="mountpoint">
         <p>
           three
@@ -35,40 +40,43 @@
         </p>
       </div>
       <p data-vue-three-target="output"></p>
-      <a data-action="click->vue-three#increment">Inc</a>
-      <a data-action="click->vue-three#mount">Mount</a>
-      <a data-action="click->vue-three#unmount">Unmount</a>
     </div>
-    <hr>
-    <h3>React</h3>
-    <div data-controller="react" data-react-counter-value="3" data-react-text-value="react Text">
-      <div style="display: flex; justify-content: space-around">
-        <div data-react-target="class">
-          <span>This is a </span>
-          <span>class Component</span>
-        </div>
-        <div data-react-target="hook">
-          <span>This is a </span>
-          <span>functional Component</span>
-        </div>  
+    <button data-action="click->vue-three#increment">Inc</button>
+    <button data-action="click->vue-three#mount">Mount</button>
+    <button data-action="click->vue-three#unmount">Unmount</button>
+  </div>
+  <hr>
+  <h3>React</h3>
+  <div data-controller="react" data-react-counter-value="3" data-react-text-value="react Text">
+    <div style="display: flex; justify-content: space-around">
+      <div data-react-target="class">
+        <span>This is a </span>
+        <span>class Component</span>
       </div>
-      <a data-action="click->react#increment">Inc</a>
-      <a data-action="click->react#mount">Mount</a>
-      <a data-action="click->react#unmount">Unmount</a>
-    </div>
-    <hr>
-    <h3>Svelte</h3>
-    <div data-controller="svelte" data-svelte-counter-value="3" data-svelte-text-value="svelte Text">
-      <div style="display: flex; justify-content: space-around">
-        <div data-svelte-target="mount" data-action="defug->svelte#debug">
-          <p>There is currently no way to access slots from outside a component to inject HTML :-(</p>
-          <p>You have to use a div with the "stimulus-component-slot-content" class instead of a slot in your component</p>
-        </div>
+      <div data-react-target="hook">
+        <span>This is a </span>
+        <span>functional Component</span>
       </div>
-      <a data-action="click->svelte#increment">Inc</a>
-      <a data-action="click->svelte#mount">Mount</a>
-      <a data-action="click->svelte#unmount">Unmount</a>
     </div>
-    <script type="module" src="/main.js"></script>
-  </body>
+    <button data-action="click->react#increment">Inc</button>
+    <button data-action="click->react#mount">Mount</button>
+    <button data-action="click->react#unmount">Unmount</button>
+  </div>
+  <hr>
+  <h3>Svelte</h3>
+  <div data-controller="svelte" data-svelte-counter-value="3" data-svelte-text-value="svelte Text">
+    <div style="display: flex; justify-content: space-around">
+      <div data-svelte-target="mount" data-action="defug->svelte#debug">
+        <p>There is currently no way to access slots from outside a component to inject HTML :-(</p>
+        <p>You have to use a div with the "stimulus-component-slot-content" class instead of a slot in your component
+        </p>
+      </div>
+    </div>
+    <button data-action="click->svelte#increment">Inc</button>
+    <button data-action="click->svelte#mount">Mount</button>
+    <button data-action="click->svelte#unmount">Unmount</button>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+
 </html>

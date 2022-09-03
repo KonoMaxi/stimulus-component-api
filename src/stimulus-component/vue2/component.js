@@ -104,14 +104,17 @@ export class Vue2Component {
   }
 
   unmount() {
+
     if ( !this._isMounted ) {
       console.warn(`already unmounted`)
       return
     }
 
-    const slotContent = this.app.$children[0].$slots.default[0].elm.innerHTML
-    this.app.$destroy()
-    this.mountHelper.restoreOriginalContent(slotContent)
+    this.mountHelper.transferChildNodes(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'), () => {
+      this.app.$destroy()
+      this.syntheticMountPoint.remove()
+    }).to(this.originalMountPoint)
+
     this._isMounted = false
 
     // as Vue2 does not offer "unmount", we have to recreate the app in case of remount
