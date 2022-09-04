@@ -9,27 +9,32 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '16.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    yarn
-  displayName: 'yarn install'
-- script: |
-    yarn build
-  displayName: 'yarn build'
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/dist/'
-    artifact: 'ES_Module'
-    publishLocation: 'pipeline'
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: '/'
-    app_build_command: 'yarn build:demo'
-    output_location: '/dist'
-  env:
-    azure_static_web_apps_api_token: $(DeploymentToken)
+jobs:
+  - job:
+    displayName: Build UMD and ES Module
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
+    - script: |
+        yarn
+      displayName: 'yarn install'
+    - script: |
+        yarn build
+      displayName: 'yarn build'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/dist/'
+        artifact: 'ES_Module'
+        publishLocation: 'pipeline'
+  - job:
+    displayName: Deploy demo to Azure Static Web Apps
+    steps:
+    - task: AzureStaticWebApp@0
+      inputs:
+        app_location: '/'
+        app_build_command: 'yarn build:demo'
+        output_location: '/dist'
+      env:
+        azure_static_web_apps_api_token: $(DeploymentToken)
