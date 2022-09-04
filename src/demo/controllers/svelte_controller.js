@@ -4,7 +4,7 @@ import HelloComponent from '../svelte/Hello.svelte'
 import { SvelteComponent } from "../../stimulus-component"
 
 export default class extends Controller {
-  static targets = [ "mount" ]
+  static targets = [ "mount", "messagebox", "message" ]
   static values = { unused: String, text: String, counter: Number }
 
   initialize () {
@@ -31,11 +31,19 @@ export default class extends Controller {
     this.counterValue = this.counterValue + 1
   }
 
-  debug ( someParam ) {
-    console.log("debug!", someParam)
+  sendMessage( some, param ) {
+    const msg = document.createElement('p')
+    msg.setAttribute("data-svelte-target", "message")
+    if ( !some && !param ) {
+      msg.textContent = `Received a message from Svelte but no parameters were provided`
+    } else {
+      msg.textContent = `Received a message from Svelte with parameters "${some}" and "${param}"`
+    }
+    this.messageboxTarget.appendChild(msg)
   }
 
-  updateText (event) {
-    this.textValue = event.target.value
+  messageTargetConnected(target) {
+    setTimeout(() => target.remove(), 3000)
   }
+
 }

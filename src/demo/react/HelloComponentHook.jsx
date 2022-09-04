@@ -10,6 +10,7 @@ export default function HelloComponentHook({ children, counter, myprop, text, on
 
   return (
     <div className="hello-component">
+      <h4>Hello from react</h4>
       <div> {textState} {counter} {myprop}</div>
       <div style={{border: 'solid 1px black', padding: '10px'}}>
         { children }
@@ -17,22 +18,20 @@ export default function HelloComponentHook({ children, counter, myprop, text, on
       <button
         onClick={() => onChange({ counter: counter + 1 })}
       >
-        +1
+        React +1
       </button>
       <button
-        onClick={() => onChange({ text: "hey you!" })}
-      >
-        Hi
-      </button>
-      <button
-        onClick={() => onChange({ text: undefined })}
+        onClick={() => onChange({ text: ":(" })}
       >
         Bye
       </button>
       <button
-        onClick={() => onAction("debugAction")}
+        onClick={() => onAction({
+          name: "sendMessage",
+          parameters: [counter, text],
+        })}
       >
-        Action
+        call stimulus action
       </button>
     </div>
   )

@@ -16,6 +16,7 @@ export default class HelloComponentClass extends React.Component {
   render() {
     return (
       <div className="hello-component">
+        <h4>Hello from react</h4>
         <div>{this.state.text} {this.state.counter} {this.props.myprop}</div>
         <div style={{border: 'solid 1px black', padding: '10px'}}>
           { this.props.children }
@@ -25,22 +26,22 @@ export default class HelloComponentClass extends React.Component {
             counter: this.state.counter + 1,
           })}
         >
-          +1
+          React +1
         </button>
         <button
           onClick={() => this.setState({
-            text: "value was emitted",
+            text: "Hey you!",
           })}
         >
-          emit input event
+          Hi
         </button>
         <button
-          onClick={() => this.props.onAction({
-            name: "debugAction",
-            params: ["value was emitted"],
-          })}
+          onClick={() => {
+            let parameters = [this.state.counter, this.state.text]
+            this.props.onAction({ name: "sendMessage", parameters })
+        }}
         >
-          use Action callback input event
+          call stimulus action
         </button>
       </div>
     )

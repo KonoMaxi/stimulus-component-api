@@ -7,18 +7,15 @@ import Vue from 'vue2'
 Vue2Component.setFactory(Vue)
 
 export default class extends Controller {
-  static targets = [ "mountpoint", "output" ]
+  static targets = [ "mountpoint", "messagebox", "message" ]
   static values = { value: String, counter: Number }
 
   initialize() {
-    console.log("stimulus - initialize")
     this.maunt = new Vue2Component(HelloComponent, this.mountpointTarget)
     this.maunt.createApp(this)
   }
 
-  connect() {
-    console.log("stimulus - connect")
-  }
+  connect() {}
 
   mount() {
     this.maunt.mount()
@@ -37,16 +34,14 @@ export default class extends Controller {
     this.counterValue = this.counterValue + 1
   }
 
-  debugVue( some, param ) {
-    console.log("debug!", some, param)
+  sendMessage( some, param ) {
+    const msg = document.createElement('p')
+    msg.setAttribute("data-vue-two-target", "message")
+    msg.textContent = `Received a message from Vue with parameters "${some}" and "${param}"`
+    this.messageboxTarget.appendChild(msg)
   }
 
-  updateText(event) {
-    this.messageValue = event.target.value
-    if (this.messageValue.length === 0) {
-      this.outputTarget.innerHTML = ""
-    } else {
-      this.outputTarget.innerHTML = `Hello, ${this.messageValue}!`
-    }
+  messageTargetConnected(target) {
+    setTimeout(() => target.remove(), 3000)
   }
 }

@@ -22,27 +22,32 @@ export default {
   },
   methods: {
     updateMessage() {
-      this.$emit("update:modelValue", "input was emitted")
+      if (this.modelValue === "Marco") {
+        this.$emit("update:modelValue", "Polo")
+      } else {
+        this.$emit("update:modelValue", "Marco")
+      }
     },
     emitAction() {
-      this.$emit("action", { name: "debugVue", parameters: ["hi", "you"]})
+      this.$emit("action", { name: "sendMessage", parameters: [this.modelValue, this.counter]})
     }
   },
   
   render() {
     return h('div', { class: "hello-component" },
     [
+      h('h4', 'Hello from Vue 3'),
       h('div', `${ this.modelValue } ${ this.currentCounter }`),
       h('div', { style: "border: solid 1px black; padding: 10px" }, this.$slots.default ? this.$slots.default() : ""),
       h('button', {
         onClick: () => { this.currentCounter += 1 },
-      }, '+1'),
+      }, 'Vue +1'),
       h('button', {
         onClick: () => { this.updateMessage() },
-      }, 'emit input event'),
+      }, 'change text-message'),
       h('button', {
         onClick: () => { this.emitAction() },
-      }, 'trigger Action')
+      }, 'call stimulus action')
     ])
   }
 };

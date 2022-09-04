@@ -10,11 +10,10 @@ ReactComponent.setFactory(createRoot)
 ReactComponent.setRenderFunction(createElement)
 
 export default class extends Controller {
-  static targets = [ "class", "hook" ]
+  static targets = [ "class", "hook", "messagebox", "message" ]
   static values = { unused: String,  text: String, counter: Number }
 
   initialize () {
-    console.log("stimulus - initialize")
     this.mauntClass = new ReactComponent(HelloComponentClass, this.classTarget)
     this.mauntHook = new ReactComponent(HelloComponentHook, this.hookTarget)
     this.mauntClass.createApp(this)
@@ -38,8 +37,10 @@ export default class extends Controller {
 
   increment () {
     if (!this.mauntClass.getProperty("myprop")) {
-      this.mauntClass.setProperty("myprop", "surprise!")
-      this.mauntHook.setProperty("myprop", "surprise!")
+      if (Math.random() < 0.1) {
+        this.mauntClass.setProperty("myprop", "surprise!")
+        this.mauntHook.setProperty("myprop", "surprise!")  
+      }
     } else {
       this.mauntClass.setProperty("myprop", undefined)
       this.mauntHook.setProperty("myprop", undefined)
@@ -48,16 +49,14 @@ export default class extends Controller {
     this.counterValue = this.counterValue + 1
   }
 
-  debugAction ( someParam ) {
-    console.log("debug!", someParam)
+  sendMessage ( some, param ) {
+    const msg = document.createElement('p')
+    msg.setAttribute("data-react-target", "message")
+    msg.textContent = `Received a message from React with parameters "${some}" and "${param}"`
+    this.messageboxTarget.appendChild(msg)
   }
 
-  updateText (event) {
-    this.modelValueValue = event.target.value
-    if (this.modelValueValue.length === 0) {
-      this.outputTarget.innerHTML = ""
-    } else {
-      this.outputTarget.innerHTML = `Hello, ${this.textValue}!`
-    }
+  messageTargetConnected(target) {
+    setTimeout(() => target.remove(), 3000)
   }
 }
