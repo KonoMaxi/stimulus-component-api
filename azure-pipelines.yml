@@ -26,3 +26,10 @@ steps:
     targetPath: '$(System.DefaultWorkingDirectory)/dist/'
     artifact: 'ES_Module'
     publishLocation: 'pipeline'
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: '/'
+    app_build_command: 'yarn build:demo'
+    output_location: '/dist'
+  env:
+    azure_static_web_apps_api_token: $(DeploymentToken)
