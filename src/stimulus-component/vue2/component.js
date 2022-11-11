@@ -10,21 +10,16 @@ const propagateChanges = function (controller, valueName) {
 
 export class Vue2Component {
 
-  static setFactory(factory) {
+  setFactory(factory) {
     this.factory = factory
   }
-  static getFactory() {
-    return this.factory
-  }
-  static setRenderFunction(r) { }
-  static getRenderFunction() { }
 
   _isMounted = false
   app = undefined
 
-  constructor(mountableComponent, mountPoint) {
+  constructor(mountableComponent, target) {
+    this.target = target
     this.mountableComponent = mountableComponent
-    this.originalMountPoint = mountPoint
     this.mountHelper = new MountHelper(this)
   }
 
@@ -55,13 +50,14 @@ export class Vue2Component {
     // get intersection of vue props and stimulus values
     let propertiesToSync = vueComponentProps.filter(x => this.stimulusControllerValues.includes(x))
 
+    this.originalMountPoint = this.controller[`${this.target}Target`]
     this.mountHelper.checkMountPointDefined()
     const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)
 
     this.syntheticMountPoint = document.createElement("div")
     this.originalMountPoint.appendChild(this.syntheticMountPoint)
 
-    this.app = new this.constructor.factory({
+    this.app = new this.factory({
       name: `${ this.controller.identifier }-controller-${ this.mountableComponent.name ? this.mountableComponent.name + '-' : '' }mountable`,
       data: () => {
         return Object.assign(

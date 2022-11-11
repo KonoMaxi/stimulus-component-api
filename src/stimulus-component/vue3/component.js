@@ -10,25 +10,20 @@ const propagateChanges = function (controller, valueName) {
 
 export class Vue3Component {
 
-  static setFactory(factory) {
+  setFactory(factory) {
     this.factory = factory
   }
-  static getFactory() {
-    return this.factory
-  }
-  static setRenderFunction(r) {
+  setRenderFunction(r) {
     this.renderFunction = r
-  }
-  static getRenderFunction() {
-    return this.renderFunction
   }
 
   _isMounted = false
   app = undefined
 
-  constructor(mountableComponent, mountPoint) {
+  constructor(mountableComponent, target) {
+    this.target = target
+
     this.mountableComponent = mountableComponent
-    this.originalMountPoint = mountPoint
     this.mountHelper = new MountHelper(this)
   }
 
@@ -57,6 +52,7 @@ export class Vue3Component {
 
     this.mountHelper.checkMountPointDefined()
 
+    this.originalMountPoint = this.controller[`${this.target}Target`]
     const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)
 
     // const innerHTML = this.mountHelper.extractOriginalContent()
@@ -68,7 +64,7 @@ export class Vue3Component {
     // get intersection of vue props and stimulus values
     let propertiesToSync = vueComponentProps.filter(x => this.stimulusControllerValues.includes(x))
 
-    this.app = this.constructor.factory({
+    this.app = this.factory({
       name: `${ this.controller.identifier }-controller-${ this.mountableComponent.name ? this.mountableComponent.name + '-' : '' }mountable`,
       data: () => {
         return Object.assign(
@@ -90,9 +86,9 @@ export class Vue3Component {
           }),
           ...propertiesToSync.map(name => propagateChanges(_this.controller, name))
         )
-        const vnode = _this.constructor.renderFunction(
+        const vnode = _this.renderFunction(
           _this.mountableComponent, props, () => [
-            _this.constructor.renderFunction('div', {class: 'stimulus-component-slot-content'})
+            _this.renderFunction('div', {class: 'stimulus-component-slot-content'})
           ]
         )
         return vnode

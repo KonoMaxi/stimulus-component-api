@@ -1,7 +1,7 @@
 export default {
   name: 'Vue2Hello',
   props: {
-    value: {
+    text: {
       type: String,
       default: "default Message"
     },
@@ -18,10 +18,10 @@ export default {
   },
   methods: {
     updateMessage() {
-      if (this.value === "Marco") {
-        this.$emit("input", "Polo")
+      if (this.text === "Marco") {
+        this.$emit("update:text", "Polo")
       } else {
-        this.$emit("input", "Marco")
+        this.$emit("update:text", "Marco")
       }
     }
   },
@@ -29,7 +29,7 @@ export default {
     return h('div', { class: "hello-component" },
     [
       h('h4', "Hello from Vue v2!"),
-      h('div', `${ this.value } ${ this.currentCounter }`),
+      h('div', `${ this.text } ${ this.currentCounter }`),
       h('div', { style: "border: solid 1px black; padding: 10px" }, this.$slots.default),
       h('button', {
         on: { click: () => { this.currentCounter += 1 } },
@@ -38,7 +38,7 @@ export default {
         on: { click: () => { this.updateMessage() } },
       }, 'change text-message'),
       h('button', {
-        on: { click: () => { this.$emit("action", { name: "sendMessage", parameters: [this.value, this.counter]}) } },
+        on: { click: () => { this.$emit("action", { name: "sendMessage", parameters: [this.text, this.counter]}) } },
       }, 'call stimulus action')
     ])
   }

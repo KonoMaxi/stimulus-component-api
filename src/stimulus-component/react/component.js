@@ -2,26 +2,20 @@ import { MountHelper } from "../core/mountHelper"
 
 export class ReactComponent {
 
-  static setFactory(factory) {
+  setFactory(factory) {
     this.factory = factory
   }
-  static getFactory() {
-    return this.factory
-  }
-  static setRenderFunction(r) {
+  setRenderFunction(r) {
     this.renderFunction = r
-  }
-  static getRenderFunction() {
-    return this.renderFunction
   }
 
   _isMounted = false
   app = undefined
 
-  constructor(mountableComponent, mountPoint, customProps) {
+  constructor(mountableComponent, target, customProps) {
     this._isClassComponent = mountableComponent.prototype.isReactComponent
     this.mountableComponent = mountableComponent
-    this.mountPoint = mountPoint
+    this.target = target
     this.otherProperties = customProps || {}
     this.mountHelper = new MountHelper(this)
   }
@@ -54,13 +48,14 @@ export class ReactComponent {
       return
     }
 
-    this.mountHelper.checkMountPointDefined()
-    this.reactRoot = this.constructor.factory(this.mountPoint)
+    this.mountPoint = this.controller[`${this.target}Target`]
+    // this.mountHelper.checkMountPointDefined()
+    this.reactRoot = this.factory(this.mountPoint)
 
     const transfer = this.mountHelper.transferChildNodes(this.mountPoint)  
     this._renderComponent()
     // react does not render immediately
-    setTimeout(() => transfer.to(this.mountPoint.querySelector('.stimulus-component-slot-content')))
+    transfer.to(() => this.mountPoint.querySelector('.stimulus-component-slot-content'))
 
     this._isMounted = true
   }
@@ -92,11 +87,11 @@ export class ReactComponent {
       })
     )
     
-    const stimulusComponentSlotContentPlaceholder = this.constructor.renderFunction("div", { className: "stimulus-component-slot-content" })
+    const stimulusComponentSlotContentPlaceholder = this.renderFunction("div", { className: "stimulus-component-slot-content" })
 
     if (this._isClassComponent) {
       this.reactRoot.render(
-        this.constructor.renderFunction(
+        this.renderFunction(
           this.mountableComponent,
           {
             ...reactProps,
@@ -107,7 +102,7 @@ export class ReactComponent {
       )
     } else { // functional component
       this.reactRoot.render(
-        this.constructor.renderFunction(
+        this.renderFunction(
           this.mountableComponent,
           reactProps,
           stimulusComponentSlotContentPlaceholder

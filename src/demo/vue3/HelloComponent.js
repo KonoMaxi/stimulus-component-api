@@ -3,7 +3,7 @@ import { h } from 'vue3'
 export default {
   name: 'Vue3Hello',
   props: {
-    modelValue: {
+    text: {
       type: String,
       default: "default Message"
     },
@@ -22,14 +22,14 @@ export default {
   },
   methods: {
     updateMessage() {
-      if (this.modelValue === "Marco") {
-        this.$emit("update:modelValue", "Polo")
+      if (this.text === "Poly") {
+        this.$emit("update:text", "Ester")
       } else {
-        this.$emit("update:modelValue", "Marco")
+        this.$emit("update:text", "Poly")
       }
     },
     emitAction() {
-      this.$emit("action", { name: "sendMessage", parameters: [this.modelValue, this.counter]})
+      this.$emit("action", { name: "sendMessage", parameters: [this.text, this.counter]})
     }
   },
   
@@ -37,7 +37,7 @@ export default {
     return h('div', { class: "hello-component" },
     [
       h('h4', 'Hello from Vue 3'),
-      h('div', `${ this.modelValue } ${ this.currentCounter }`),
+      h('div', `${ this.text } ${ this.currentCounter }`),
       h('div', { style: "border: solid 1px black; padding: 10px" }, this.$slots.default ? this.$slots.default() : ""),
       h('button', {
         onClick: () => { this.currentCounter += 1 },
