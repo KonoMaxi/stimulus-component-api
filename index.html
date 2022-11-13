@@ -16,22 +16,34 @@
   <p>Each language's component implements (at least) a counter and a text-message. You can increase the counter by clicking "Stimulus +1" (triggers a stimulus action) or "*Framework* +1" (the component increases the counter) <b>Please note: The counter and the text-message are synchronized with the stimulus-value-api!</b> Thus unmounting and remounting it will yield consisten results.</p>
   <p>As its often simpler (clearer structured) to let the stimulus controller handle e.g. form submitting, the controller listens for "action"-events. These will be mapped to a stimulus-actions and allow passing of parameters.</p>
 
-  <h3>Vue2</h3>
-  <div data-controller="vue-two" data-vue-two-counter-value="2" data-vue-two-value-value="Happy to see you!">
+  <div data-controller="demo" data-demo-counter-value="2" data-demo-text-value="Happy to see you!">
     <div style="display: flex; justify-content: space-around">
-      <div data-vue-two-target="mountpoint">
+      <div data-demo-target="vuetwo">
         <ul>
-          <li>Some HTML nested under the mountpoint.</li>
-          <li>It'll be handed into the components slot.</li>
+          <li>Mount Vue2.</li>
+        </ul>
+      </div>
+      <div data-demo-target="vuethree">
+        <ul>
+          <li>Mount Vue3.</li>
+        </ul>
+      </div>
+      <div data-demo-target="reactClass">
+        <ul>
+          <li>Mount React Class.</li>
+        </ul>
+      </div>
+      <div data-demo-target="reactHook">
+        <ul>
+          <li>Mount React Hook.</li>
         </ul>
       </div>
     </div>
-    <div data-vue-two-target="messagebox"></div>
-    <button data-action="click->vue-two#mount">Mount</button>
-    <button data-action="click->vue-two#unmount">Unmount</button>
-    <button data-action="click->vue-two#increment">Stimulus +1</button>
+    <div data-demo-target="messagebox"></div>
+    <button data-action="click->demo#increment">Stimulus +1</button>
+    <button data-action="click->demo#unmountSelf">delete controller node</button>
   </div>
-  <hr>
+  <!-- <hr>
   <h3>Vue3</h3>
   <div data-controller="vue-three" data-vue-three-counter-value="3" data-vue-three-model-value-value="I'm a text-message!">
     <div style="display: flex; justify-content: space-around">
@@ -65,22 +77,7 @@
     <button data-action="click->react#mount">Mount</button>
     <button data-action="click->react#unmount">Unmount</button>
     <button data-action="click->react#increment">Stimulus +1</button>
-  </div>
-  <hr>
-  <h3>Svelte</h3>
-  <div data-controller="svelte" data-svelte-counter-value="13" data-svelte-text-value="I was compiled!">
-    <div style="display: flex; justify-content: space-around">
-      <div data-svelte-target="mount">
-        <p>There is currently no way to access slots from outside a component to inject HTML :-(</p>
-        <p>You have to use a div with the "stimulus-component-slot-content" class instead of a slot in your component
-        </p>
-      </div>
-    </div>
-    <div data-svelte-target="messagebox"></div>
-    <button data-action="click->svelte#mount">Mount</button>
-    <button data-action="click->svelte#unmount">Unmount</button>
-    <button data-action="click->svelte#increment">Stimulus +1</button>
-  </div>
+  </div> -->
   <script type="module" src="/main.js"></script>
 </body>
 

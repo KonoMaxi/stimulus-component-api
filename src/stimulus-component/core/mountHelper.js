@@ -60,10 +60,25 @@ export class MountHelper {
     }
 
     return {
-      to: (sink) => {
-        Array.from(docFragment.children).forEach((node) => sink.appendChild(node))
+      to: async (sink) => {
+        let sinkNode
+        if (typeof sink === 'function') {
+          sinkNode = await this._retry(sink)
+        } else {
+          sinkNode = sink
+        }
+
+        Array.from(docFragment.children).forEach((node) => sinkNode.appendChild(node))
       }
     }
   }
 
+  async _retry(fn, retries=10) {
+    if (retries === 0) { return null }
+    const result = fn()
+    if (result !== null) { return result }
+
+    await (new Promise(resolve => setTimeout(resolve, 100)))
+    return this._retry(fn, (retries - 1))    
+  }
 }
