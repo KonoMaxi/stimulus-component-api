@@ -38,7 +38,7 @@ const useComponents = (controller) => {
     },
     disconnect() {
       controllerDisconnect()
-      components.forEach(c => c.mount())
+      components.forEach(c => c.unmount())
     }
   })
 }

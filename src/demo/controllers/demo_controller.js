@@ -62,4 +62,8 @@ export default class extends Controller {
   messageTargetConnected(target) {
     setTimeout(() => target.remove(), 3000)
   }
+
+  unmountSelf () {
+    this.element.remove()
+  }
 }

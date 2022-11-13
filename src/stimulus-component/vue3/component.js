@@ -1,13 +1,5 @@
 import { MountHelper } from "../core/mountHelper"
 
-const propagateChanges = function (controller, valueName) {
-  return {
-    [`onUpdate:${valueName}`]: function (value) {
-      controller[`${valueName}Value`] = value
-    }
-  }
-}
-
 export class Vue3Component {
 
   setFactory(factory) {
@@ -55,7 +47,6 @@ export class Vue3Component {
     this.originalMountPoint = this.controller[`${this.target}Target`]
     const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)
 
-    // const innerHTML = this.mountHelper.extractOriginalContent()
     this.syntheticMountPoint = document.createElement("div")
     this.originalMountPoint.appendChild(this.syntheticMountPoint)
 
@@ -75,6 +66,14 @@ export class Vue3Component {
         )
       },
       render: function () {
+        const propagateChanges = function (controller, valueName) {
+          return {
+            [`onUpdate:${valueName}`]: function (value) {
+              controller[`${valueName}Value`] = value
+            }
+          }
+        }
+        
         const props = Object.assign(
           {
             onAction: function (payload) {
@@ -95,9 +94,9 @@ export class Vue3Component {
       }
     })
     this.vueRoot = this.app.mount(this.syntheticMountPoint)
+    this.syntheticMountPoint = this.app._container
 
     transfer.to(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'))
-    this.syntheticMountPoint = this.app._container
     this._isMounted = true
   }
 
@@ -109,6 +108,7 @@ export class Vue3Component {
 
     this.mountHelper.transferChildNodes(this.syntheticMountPoint.querySelector('.stimulus-component-slot-content'), () => {
       this.app.unmount()
+      this.syntheticMountPoint.remove()
     }).to(this.originalMountPoint)
 
     this._isMounted = false
