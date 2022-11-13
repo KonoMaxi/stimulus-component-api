@@ -1,7 +1,7 @@
 # Stimulus-Component-API Proof-of-Concept
 [![Build Status](https://dev.azure.com/konowski/stimulus-component-api/_apis/build/status/Build-Pipeline?branchName=main&jobName=Build%20UMD%20and%20ES%20Module)](https://dev.azure.com/konowski/stimulus-component-api/_build/latest?definitionId=1&branchName=main)
 
-This small Proof-of-Concept (PoC) shows examples for utilizing the StimulusJS lifecycle-hooks to mount JS-Components and persisting State in the DOM using the StimulusJS Value-API. This project implements examples with Vue v2, Vue v3, Svelte and React.
+This small Proof-of-Concept (PoC) shows examples for utilizing the StimulusJS lifecycle-hooks to mount JS-Components and persisting State in the DOM using the StimulusJS Value-API. This project implements examples with Vue v2, Vue v3 and React.
 
 Have a look at the live demo on https://stimulus-component-api.konow.ski/!
 

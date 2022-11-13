@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
     "vite": "^2.9.9"
   },
   "dependencies": {
@@ -17,7 +16,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "stimulus-vite-helpers": "^3.0.0",
-    "svelte": "^3.49.0",
     "vue2": "npm:vue@2",
     "vue3": "npm:vue@3"
   }

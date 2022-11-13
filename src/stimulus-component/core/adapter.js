@@ -1,4 +1,3 @@
-import { compute_slots } from "svelte/internal";
 import { ReactComponent, VueComponent } from "../../stimulus-component"
 
 const mountComponent = (controller, componentDefinition) => {
