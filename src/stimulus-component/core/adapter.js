@@ -1,24 +1,19 @@
 import { compute_slots } from "svelte/internal";
-import { ReactComponent, Vue2Component, Vue3Component } from "../../stimulus-component"
+import { ReactComponent, VueComponent } from "../../stimulus-component"
 
 const mountComponent = (controller, componentDefinition) => {
   let m;
   if (componentDefinition.type.toLowerCase() === 'vue') {
-    if (componentDefinition.renderFunction === undefined) {
-      m = new Vue2Component(componentDefinition.component, componentDefinition.target)
-    } else {
-      m = new Vue3Component(componentDefinition.component, componentDefinition.target)
-      m.setRenderFunction(componentDefinition.renderFunction)
-    }
+    m = new VueComponent(componentDefinition.component, componentDefinition.target)
   } else if (componentDefinition.type.toLowerCase() === 'react') {
     m = new ReactComponent(componentDefinition.component, componentDefinition.target)
-    m.setRenderFunction(componentDefinition.renderFunction)
   } else {
     return undefined
   }
+  m.setRenderFunction(componentDefinition.renderFunction)
   m.setFactory(componentDefinition.factoryFunction)
   m.createApp(controller)
-componentDefinition.reference = m  
+  componentDefinition.reference = m  
 
   return m
 }
