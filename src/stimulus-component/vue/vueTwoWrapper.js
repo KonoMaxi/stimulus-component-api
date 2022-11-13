@@ -2,7 +2,6 @@ export class VueTwoWrapper {
   data = {} // == app
 
   constructor(factory, controller, mountableComponent, mountHelper) {
-    console.log(mountableComponent)
     const vueComponentProps = Object.keys(mountableComponent.props)
 
     // get intersection of vue props and stimulus values
