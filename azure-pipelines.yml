@@ -35,7 +35,7 @@ jobs:
         TargetFolder: '$(Build.ArtifactStagingDirectory)/dist/'
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.ArtifactStagingDirectory)'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'ES_Module'
         publishLocation: 'pipeline'
   - job:
