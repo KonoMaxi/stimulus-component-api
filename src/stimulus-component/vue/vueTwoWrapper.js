@@ -44,7 +44,7 @@ export class VueTwoWrapper {
             )
           },
           [
-            h("div", { class: 'stimulus-component-slot-content'})
+            h("span", { class: 'stimulus-component-slot-content'})
           ]
         )
       }

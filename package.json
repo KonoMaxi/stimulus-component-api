@@ -1,6 +1,6 @@
 {
   "name": "stimulus-component-api",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "files": [
     "dist"
@@ -21,7 +21,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@hotwired/stimulus": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "stimulus-vite-helpers": "^3.0.0",
@@ -29,5 +28,7 @@
     "vue2": "npm:vue@2",
     "vue3": "npm:vue@3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@hotwired/stimulus": ">3.0.0"
+  }
 }

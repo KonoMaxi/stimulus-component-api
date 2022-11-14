@@ -39,7 +39,7 @@ export class VueThreeWrapper {
         )
         const vnode = renderFn(
           mountableComponent, props, () => [
-            renderFn('div', {class: 'stimulus-component-slot-content'})
+            renderFn('span', {class: 'stimulus-component-slot-content'})
           ]
         )
         return vnode

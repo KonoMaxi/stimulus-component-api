@@ -87,7 +87,7 @@ export class ReactComponent {
       })
     )
     
-    const stimulusComponentSlotContentPlaceholder = this.renderFunction("div", { className: "stimulus-component-slot-content" })
+    const stimulusComponentSlotContentPlaceholder = this.renderFunction("span", { className: "stimulus-component-slot-content" })
 
     if (this._isClassComponent) {
       this.reactRoot.render(
