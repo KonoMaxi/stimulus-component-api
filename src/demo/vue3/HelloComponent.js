@@ -1,35 +1,41 @@
-import { h } from 'vue3'
+import { computed, h } from 'vue3'
 
 export default {
   name: 'Vue3Hello',
   props: {
-    text: {
-      type: String,
-      default: "default Message"
-    },
     counter: {
       type: Number,
       default: 0
-    }
-  },
-  computed: {
-    currentCounter: {
-      get () { return this.counter },
-      set (newValue) {
-        this.$emit("update:counter", newValue)
-      }
-    }
-  },
-  methods: {
-    updateMessage() {
-      if (this.text === "Poly") {
-        this.$emit("update:text", "Ester")
-      } else {
-        this.$emit("update:text", "Poly")
-      }
     },
-    emitAction() {
-      this.$emit("action", { name: "sendMessage", parameters: [this.text, this.counter]})
+    text: {
+      type: String,
+      default: "default Message"
+    }
+  }, // props: ["counter", "text"] Works too
+  emits: ["update:counter", "update:text", "action"],
+  setup(props, ctx) {
+    const currentCounter = computed({
+      get () { return props.counter },
+      set (newValue) {
+        ctx.emit("update:counter", newValue)
+      }
+    })
+
+    function updateMessage() {
+      if (props.text === "Poly") {
+        ctx.emit("update:text", "Ester")
+      } else {
+        ctx.emit("update:text", "Poly")
+      }
+    }
+
+    function emitAction() {
+      ctx.emit("action", { name: "sendMessage", parameters: [props.text, props.counter]})
+    }
+
+    // expose to template and other options API hooks
+    return {
+      props, currentCounter, emitAction, updateMessage
     }
   },
   
