@@ -1,7 +1,17 @@
 {
   "name": "stimulus-component-api",
+  "version": "0.0.6",
+  "type": "module",
+  "files": ["dist"],
+  "main": "./dist/stimulus-component-api.umd.js",
+  "module": "./dist/stimulus-component-api.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/stimulus-component-api.es.js",
+      "require": "./dist/stimulus-component-api.umd.js"
+    }
+  },
   "private": false,
-  "version": "0.0.5",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
