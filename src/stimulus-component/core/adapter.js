@@ -29,7 +29,7 @@ const useComponents = (controller) => {
 
     const originalTargetConnectedFn = controller[targetConnectedCallback]
     const originalTargetDisconnectedFn = controller[targetDisconnectedCallback]
-
+    const originalControllerDisconnectedFn = controller.disconnect.bind(controller)
 
     Object.assign(controller, {
       [targetConnectedCallback]: function (target) {
@@ -44,6 +44,10 @@ const useComponents = (controller) => {
           originalTargetDisconnectedFn.bind(controller)(target)
         }
         target[domTargetAttributeName].unmount()
+      },
+      disconnect () {
+        originalControllerDisconnectedFn()
+        controller[`${componentDefinition.target}Targets`].forEach(t => t[domTargetAttributeName].unmount())
       }
     })
   
