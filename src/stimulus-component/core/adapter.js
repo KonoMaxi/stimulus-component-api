@@ -1,6 +1,6 @@
 import { ReactComponent, VueComponent } from "../../stimulus-component"
 
-const mountComponent = (controller, componentDefinition) => {
+const mountComponent = (controller, componentDefinition, domTarget, domTargetAttributeName) => {
   let m;
   if (componentDefinition.type.toLowerCase() === 'vue') {
     m = new VueComponent(componentDefinition.component, componentDefinition.target)
@@ -12,29 +12,47 @@ const mountComponent = (controller, componentDefinition) => {
   m.setRenderFunction(componentDefinition.renderFunction)
   m.setFactory(componentDefinition.factoryFunction)
   m.createApp(controller)
-  componentDefinition.reference = m  
 
-  return m
+  
+  if (domTarget[domTargetAttributeName]) {
+    console.warn("You mounted a second component to a DOMNode from the same controller with an identical target-name. This causes unmount-errors.")
+  }
+  domTarget[domTargetAttributeName] = m
 }
 
 const useComponents = (controller) => {
-  const controllerDisconnect = controller.disconnect.bind(controller)
-  const controllerConnect = controller.connect.bind(controller)
+  controller.constructor.components.forEach((componentDefinition) => {
+    const domTargetAttributeName = `${controller.identifier}-${componentDefinition.target}-component`
 
-  const components = controller.constructor.components.map((componentDefinition) => {
-    return mountComponent(controller, componentDefinition)
+    const targetConnectedCallback = `${componentDefinition.target}TargetConnected`
+    const targetDisconnectedCallback = `${componentDefinition.target}TargetDisconnected`
+
+    const originalTargetConnectedFn = controller[targetConnectedCallback]
+    const originalTargetDisconnectedFn = controller[targetDisconnectedCallback]
+    const originalControllerDisconnectedFn = controller.disconnect.bind(controller)
+
+    Object.assign(controller, {
+      [targetConnectedCallback]: function (target) {
+        mountComponent(controller, componentDefinition, target, domTargetAttributeName)
+        target[domTargetAttributeName].mount()
+        if ( originalTargetConnectedFn ) {
+          originalTargetConnectedFn.bind(controller)(target)
+        }
+      },
+      [targetDisconnectedCallback]: function (target) {
+        if ( originalTargetDisconnectedFn ) {
+          originalTargetDisconnectedFn.bind(controller)(target)
+        }
+        target[domTargetAttributeName].unmount()
+      },
+      disconnect () {
+        originalControllerDisconnectedFn()
+        controller[`${componentDefinition.target}Targets`].forEach(t => t[domTargetAttributeName].unmount())
+      }
+    })
+  
   })
 
-  Object.assign(controller, {
-    connect() {
-      components.forEach(c => c.mount())
-      controllerConnect()
-    },
-    disconnect() {
-      controllerDisconnect()
-      components.forEach(c => c.unmount())
-    }
-  })
 }
 
 export default useComponents
