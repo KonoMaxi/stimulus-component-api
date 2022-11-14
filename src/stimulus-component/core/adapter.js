@@ -1,4 +1,5 @@
-import { ReactComponent, VueComponent } from "../../stimulus-component"
+import { ReactComponent } from "../react/component"
+import { VueComponent } from "../vue/component"
 
 const mountComponent = (controller, componentDefinition, domTarget, domTargetAttributeName) => {
   let m;
@@ -20,7 +21,7 @@ const mountComponent = (controller, componentDefinition, domTarget, domTargetAtt
   domTarget[domTargetAttributeName] = m
 }
 
-const useComponents = (controller) => {
+export const useComponents = (controller) => {
   controller.constructor.components.forEach((componentDefinition) => {
     const domTargetAttributeName = `${controller.identifier}-${componentDefinition.target}-component`
 
@@ -54,5 +55,3 @@ const useComponents = (controller) => {
   })
 
 }
-
-export default useComponents

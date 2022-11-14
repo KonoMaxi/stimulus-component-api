@@ -10,7 +10,7 @@ import HelloReactHook from '../react/HelloComponentHook'
 import HelloVue2 from '../vue2/HelloComponent'
 import HelloVue3 from '../vue3/HelloComponent'
 
-import useComponents from '../../stimulus-component/core/adapter'
+import { useComponents } from '../../stimulus-component/'
 
 export default class extends Controller {
   static components = [{
