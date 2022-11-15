@@ -1,12 +1,12 @@
 {
   "name": "stimulus-component-api",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/stimulus-component-api.umd.cjs",
   "module": "./dist/stimulus-component-api.js",
+  "main": "./dist/stimulus-component-api.umd.cjs",
   "exports": {
     ".": {
       "import": "./dist/stimulus-component-api.js",

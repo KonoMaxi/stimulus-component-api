@@ -52,6 +52,11 @@ export class MountHelper {
   }
 
   transferChildNodes(origin, optionalCallback) {
+    if (!origin) {
+      return {
+        to: (dummySink) => { }
+      }
+    }
     const docFragment = new DocumentFragment()
     Array.from(origin.children).forEach((node) => docFragment.appendChild(node))
 
