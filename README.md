@@ -12,7 +12,7 @@ The API's adaptors handle:
 Add the Package to your package.json e.g. via `npm i stimulus-compoment-api` or `yarn add stimulus-compoment-api`
 
 
-## comfiguring mounts
+## configuring the components
 Add a component-defintion to the `static components` array.
 
 Please note that `stimulus-component-api` does not ship with any vue or react code! You have to provide references to their `factoryFunction` and `renderFunction`.
@@ -52,8 +52,6 @@ export default class extends Controller {
   }
 }
 ```
-
-Once the controller connects and a target is inside the controllers scope, the component will be mounted to all targets and the "message" prop will be injected into the component-props.
 
 ## State
 You want to use your controllers values in your component? No Problem!
