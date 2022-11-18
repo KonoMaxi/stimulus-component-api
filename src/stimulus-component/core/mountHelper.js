@@ -72,8 +72,9 @@ export class MountHelper {
         } else {
           sinkNode = sink
         }
-
-        Array.from(docFragment.children).forEach((node) => sinkNode.appendChild(node))
+        if (sink) {
+          Array.from(docFragment.children).forEach((node) => sinkNode.appendChild(node))
+        }
       }
     }
   }
