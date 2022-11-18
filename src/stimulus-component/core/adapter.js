@@ -13,6 +13,9 @@ const mountComponent = (controller, componentDefinition, domTarget, domTargetAtt
   m.setRenderFunction(componentDefinition.renderFunction)
   m.setFactory(componentDefinition.factoryFunction)
   m.createApp(controller)
+  if (componentDefinition.callbackFunction) {
+    m.setCallbackFunction(componentDefinition.callbackFunction)
+  }
 
   
   if (domTarget[domTargetAttributeName]) {
@@ -45,10 +48,6 @@ export const useComponents = (controller) => {
           originalTargetDisconnectedFn.bind(controller)(target)
         }
         target[domTargetAttributeName].unmount()
-      },
-      disconnect () {
-        originalControllerDisconnectedFn()
-        controller[`${componentDefinition.target}Targets`].forEach(t => t[domTargetAttributeName].unmount())
       }
     })
   

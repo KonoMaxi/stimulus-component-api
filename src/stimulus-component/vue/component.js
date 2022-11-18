@@ -10,6 +10,10 @@ export class VueComponent {
   setRenderFunction(r) {
     this.renderFunction = r
   }
+  setCallbackFunction(c) {
+    this.callbackFunction = c
+  }
+
 
   _isMounted = false
   app = undefined
@@ -54,6 +58,9 @@ export class VueComponent {
       this.app = new VueTwoWrapper(this.factory, this.controller, this.mountableComponent, this.mountHelper)
     } else {
       this.app = new VueThreeWrapper(this.factory, this.renderFunction, this.controller, this.mountableComponent, this.mountHelper)
+      if (this.callbackFunction) {
+        this.callbackFunction(this.app)
+      }
     }
 
     this.syntheticMountPoint = this.app.mount(this.syntheticMountPoint)

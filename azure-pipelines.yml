@@ -26,7 +26,9 @@ jobs:
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)/'
-        Contents: 'package.json'
+        Contents: |
+          package.json
+          README.md
         TargetFolder: '$(Build.ArtifactStagingDirectory)/'
     - task: CopyFiles@2
       inputs:
