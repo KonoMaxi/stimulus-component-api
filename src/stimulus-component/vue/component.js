@@ -46,7 +46,6 @@ export class VueComponent {
       console.warn(`already mounted`)
       return
     }
-    this.mountHelper.checkMountPointDefined()
 
     this.originalMountPoint = this.controller[`${this.target}Target`]
     const transfer = this.mountHelper.transferChildNodes(this.originalMountPoint)

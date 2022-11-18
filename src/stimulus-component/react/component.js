@@ -49,7 +49,6 @@ export class ReactComponent {
     }
 
     this.mountPoint = this.controller[`${this.target}Target`]
-    // this.mountHelper.checkMountPointDefined()
     this.reactRoot = this.factory(this.mountPoint)
 
     const transfer = this.mountHelper.transferChildNodes(this.mountPoint)  

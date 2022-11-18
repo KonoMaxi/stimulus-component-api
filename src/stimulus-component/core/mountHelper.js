@@ -44,13 +44,6 @@ export class MountHelper {
     }
   }
 
-  checkMountPointDefined() {
-    if (!this.mountable.mountPoint) {
-      console.debug(`setting mountpoint to controller element`)
-      this.mountable.mountPoint = this.controller.element
-    }
-  }
-
   transferChildNodes(origin, optionalCallback) {
     if (!origin) {
       return {
